@@ -1,5 +1,6 @@
 package com.dra.speakeaseapppatient.ui.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -46,6 +47,7 @@ import com.dra.speakeaseapppatient.ui.components.IconTextButton
 import com.dra.speakeaseapppatient.utils.TextToSpeechHelper
 import com.dra.speakeaseapppatient.viewmodel.SakitViewModel
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun SakitScreen(
     textToSpeechHelper: TextToSpeechHelper,
@@ -65,18 +67,19 @@ fun SakitScreen(
                 )
             }
         },
-        floatingActionButtonPosition = FabPosition.End
-    ) { paddingValues ->
+        floatingActionButtonPosition = FabPosition.End,
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(0.dp)
         ) {
             TabRow(
                 selectedTabIndex = selectedTabIndex,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp),
+                    .height(56.dp)
+                    .padding(0.dp),
                 indicator = { tabPositions ->
                     TabRowDefaults.SecondaryIndicator(
                         Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex])
@@ -124,19 +127,24 @@ class SakitViewModelFactory(
 fun Tingkatan(viewModel: SakitViewModel) {
     val buttonItems = viewModel.getButtonItems()
 
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 180.dp),
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        contentPadding = PaddingValues(16.dp)
+    Box(
+        modifier = Modifier
+            .padding(16.dp)
     ) {
-        items(buttonItems) { (iconRes, description) ->
-            IconTextButton(
-                iconRes = iconRes,
-                text = description,
-                onClick = { viewModel.onButtonClicked(description) }
-            )
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = 160.dp),
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(16.dp)
+        ) {
+            items(buttonItems) { (iconRes, description) ->
+                IconTextButton(
+                    iconRes = iconRes,
+                    text = description,
+                    onClick = { viewModel.onButtonClicked(description) }
+                )
+            }
         }
     }
 }

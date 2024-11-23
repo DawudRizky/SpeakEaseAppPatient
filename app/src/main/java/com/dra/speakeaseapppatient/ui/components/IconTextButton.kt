@@ -30,8 +30,7 @@ fun IconTextButton(
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
-            .aspectRatio(1f)
-            .padding(8.dp),
+            .aspectRatio(1f),
         shape = RoundedCornerShape(16.dp)
     ) {
         Column(

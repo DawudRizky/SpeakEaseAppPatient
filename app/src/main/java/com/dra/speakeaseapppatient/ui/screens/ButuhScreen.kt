@@ -1,5 +1,6 @@
 package com.dra.speakeaseapppatient.ui.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,6 +25,7 @@ import com.dra.speakeaseapppatient.R
 import com.dra.speakeaseapppatient.ui.components.IconTextButton
 import com.dra.speakeaseapppatient.utils.TextToSpeechHelper
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ButuhScreen(textToSpeechHelper: TextToSpeechHelper) {
     val buttonItems = listOf(
@@ -46,12 +48,12 @@ fun ButuhScreen(textToSpeechHelper: TextToSpeechHelper) {
             }
         },
         floatingActionButtonPosition = FabPosition.End
-    ) { paddingValues ->
+    ) {
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 180.dp), // Minimum button size
+            columns = GridCells.Adaptive(minSize = 160.dp), // Minimum button size
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(16.dp)

@@ -1,5 +1,6 @@
 package com.dra.speakeaseapppatient.ui.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -29,6 +30,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dra.speakeaseapppatient.utils.TextToSpeechHelper
 import com.dra.speakeaseapppatient.viewmodel.BicaraViewModel
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun BicaraScreen(
     textToSpeechHelper: TextToSpeechHelper,
@@ -47,11 +49,10 @@ fun BicaraScreen(
             }
         },
         floatingActionButtonPosition = FabPosition.End
-    ) { paddingValues ->
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
