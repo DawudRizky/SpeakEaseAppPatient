@@ -29,12 +29,12 @@ import com.dra.speakeaseapppatient.utils.TextToSpeechHelper
 @Composable
 fun OrangScreen(textToSpeechHelper: TextToSpeechHelper) {
     val buttonItems = listOf(
-        Pair(R.drawable.baseline_healing_24, "Home"),
-        Pair(R.drawable.baseline_healing_24, "Favorite"),
-        Pair(R.drawable.baseline_healing_24, "Star"),
-        Pair(R.drawable.baseline_healing_24, "Settings"),
-        Pair(R.drawable.baseline_healing_24, "Search"),
-        Pair(R.drawable.baseline_healing_24, "Profile")
+        Pair(R.drawable.doctor, "Dokter"),
+        Pair(R.drawable.nurse, "Perawat"),
+        Pair(R.drawable.parent, "Orang Tua"),
+        Pair(R.drawable.children, "Anak"),
+        Pair(R.drawable.marriage, "Pasangan"),
+        Pair(R.drawable.siblings, "Saudara")
     )
     var showLanguageDialog by remember { mutableStateOf(false) }
 

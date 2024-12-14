@@ -13,11 +13,15 @@ import com.dra.speakeaseapppatient.ui.components.TopBar
 import com.dra.speakeaseapppatient.utils.TextToSpeechHelper
 
 @Composable
-fun MainScreen(textToSpeechHelper: TextToSpeechHelper) {
+fun MainScreen(
+    textToSpeechHelper: TextToSpeechHelper,
+    onNavigateToEmergency: () -> Unit,
+    onLogout: () -> Unit
+) {
     val navController = rememberNavController()
 
     Scaffold(
-        topBar = { TopBar() },
+        topBar = { TopBar(onEmergencyClick = onNavigateToEmergency) },
         bottomBar = { BottomNavBar(navController) }
     ) { innerPadding ->
         NavHost(
@@ -29,7 +33,7 @@ fun MainScreen(textToSpeechHelper: TextToSpeechHelper) {
             composable(NavRoute.Sakit.route) { SakitScreen(textToSpeechHelper) }
             composable(NavRoute.Butuh.route) { ButuhScreen(textToSpeechHelper) }
             composable(NavRoute.Orang.route) { OrangScreen(textToSpeechHelper) }
-            composable(NavRoute.Profil.route) { ProfilScreen() }
+            composable(NavRoute.Profil.route) { ProfilScreen(onLogout = onLogout) }
         }
     }
 }

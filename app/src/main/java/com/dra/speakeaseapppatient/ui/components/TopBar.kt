@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.dra.speakeaseapppatient.R
 
 @Composable
-fun TopBar() {
+fun TopBar(onEmergencyClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -68,19 +68,19 @@ fun TopBar() {
                 )
             }
 
-            Box (
+            Box(
                 modifier = Modifier
                     .weight(0.3f)
                     .background(MaterialTheme.colorScheme.primary)
-            ){
+            ) {
                 IconButton(
-                    onClick = { /* Handle click */ },
+                    onClick = onEmergencyClick,
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
                     Icon(
                         imageVector = Icons.Default.Notifications,
-                        contentDescription = "Action Button",
+                        contentDescription = "Emergency Button",
                         tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }

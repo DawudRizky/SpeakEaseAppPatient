@@ -18,12 +18,12 @@ class SakitViewModel(
     val tappedPosition: MutableState<Offset?> = mutableStateOf(null)
 
     private val buttonItems = listOf(
-        Pair(R.drawable.baseline_healing_24, "Home"),
-        Pair(R.drawable.baseline_healing_24, "Favorite"),
-        Pair(R.drawable.baseline_healing_24, "Star"),
-        Pair(R.drawable.baseline_healing_24, "Settings"),
-        Pair(R.drawable.baseline_healing_24, "Search"),
-        Pair(R.drawable.baseline_healing_24, "Profile")
+        Pair(R.drawable.pain_0, "Tidak sakit"),
+        Pair(R.drawable.pain_2, "Sedikit sakit"),
+        Pair(R.drawable.pain_4, "Sedikit lebih sakit"),
+        Pair(R.drawable.pain_6, "lebih sakit"),
+        Pair(R.drawable.pain_8, "Sangat sakit"),
+        Pair(R.drawable.pain_10, "Tersakit")
     )
 
     fun getButtonItems() = buttonItems

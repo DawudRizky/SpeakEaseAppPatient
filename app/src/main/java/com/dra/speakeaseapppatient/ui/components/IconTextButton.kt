@@ -1,7 +1,10 @@
 package com.dra.speakeaseapppatient.ui.components
 
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,16 +22,44 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
+//@Composable
+//fun IconTextButton(
+//    iconRes: Int,
+//    text: String,
+//    onClick: () -> Unit,
+//    modifier: Modifier = Modifier
+//) {
+//    Button(
+//        onClick = onClick,
+//        modifier = modifier
+//            .fillMaxWidth()
+//            .aspectRatio(1f),
+//        shape = RoundedCornerShape(16.dp)
+//    ) {
+//        Column(
+//            verticalArrangement = Arrangement.Center,
+//            horizontalAlignment = Alignment.CenterHorizontally
+//        ) {
+//            Icon(
+//                painter = painterResource(id = iconRes),
+//                contentDescription = null,
+//                modifier = Modifier.size(96.dp)
+//            )
+//            Spacer(modifier = Modifier.height(8.dp))
+//            Text(text = text, textAlign = TextAlign.Center)
+//        }
+//    }
+//}
+
 @Composable
 fun IconTextButton(
-    iconRes: Int,
+    @DrawableRes iconRes: Int,
     text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onClick: () -> Unit
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier
+        modifier = Modifier.padding(8.dp)
             .fillMaxWidth()
             .aspectRatio(1f),
         shape = RoundedCornerShape(16.dp)
@@ -37,13 +68,16 @@ fun IconTextButton(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(
+            Image(
                 painter = painterResource(id = iconRes),
-                contentDescription = null,
-                modifier = Modifier.size(96.dp)
+                contentDescription = text,
+                modifier = Modifier.size(120.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = text, textAlign = TextAlign.Center)
+            Text(
+                text = text,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }

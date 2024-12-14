@@ -29,12 +29,12 @@ import com.dra.speakeaseapppatient.utils.TextToSpeechHelper
 @Composable
 fun ButuhScreen(textToSpeechHelper: TextToSpeechHelper) {
     val buttonItems = listOf(
-        Pair(R.drawable.baseline_healing_24, "Home"),
-        Pair(R.drawable.baseline_healing_24, "Favorite"),
-        Pair(R.drawable.baseline_healing_24, "Star"),
-        Pair(R.drawable.baseline_healing_24, "Settings"),
-        Pair(R.drawable.baseline_healing_24, "Search"),
-        Pair(R.drawable.baseline_healing_24, "Profile")
+        Pair(R.drawable.person_raised_hand_96dp_ffffff_fill0_wght400_grad0_opsz48, "Tolong"),
+        Pair(R.drawable.water_full_96dp_ffffff_fill0_wght400_grad0_opsz48, "Minum"),
+        Pair(R.drawable.fork_spoon_96dp_ffffff_fill0_wght400_grad0_opsz48, "Makan"),
+        Pair(R.drawable.pill_96dp_ffffff_fill0_wght400_grad0_opsz48, "Obat"),
+        Pair(R.drawable.wc_96dp_ffffff_fill0_wght400_grad0_opsz48, "Kamar Mandi"),
+        Pair(R.drawable.luggage_96dp_ffffff_fill0_wght400_grad0_opsz48, "Barang")
     )
     var showLanguageDialog by remember { mutableStateOf(false) }
 

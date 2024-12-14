@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="Theme.YourApp" parent="Theme.AppCompat.Light">
+        <!-- Splash screen attributes -->
+        <item name="android:windowSplashScreenBackground">@color/splash_bg</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/asset_1</item>
+        <item name="android:windowSplashScreenAnimationDuration">1000</item> <!-- Optional -->
+        <item name="postSplashScreenTheme">@style/Theme.YourApp.Main</item>
+    </style>
 
-    <style name="Theme.SpeakEaseAppPatient" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.YourApp.Main" parent="Theme.AppCompat.Light">
+        <!-- App's main theme -->
+    </style>
 </resources>
+

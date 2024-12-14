@@ -6,9 +6,18 @@ import kotlinx.coroutines.flow.StateFlow
 
 class BicaraViewModel : ViewModel() {
     private val _textInput = MutableStateFlow("")
-    val textInput: StateFlow<String> get() = _textInput
+    val textInput: StateFlow<String> = _textInput
+
+    private val _history = MutableStateFlow<List<String>>(emptyList())
+    val history: StateFlow<List<String>> = _history
 
     fun updateText(newText: String) {
         _textInput.value = newText
+    }
+
+    fun addToHistory(input: String) {
+        if (input.isNotBlank()) {
+            _history.value = listOf(input) + _history.value.take(9) // Keep only the last 10 items
+        }
     }
 }
