@@ -29,6 +29,7 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,18 +45,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dra.speakeaseapppatient.R
+import com.dra.speakeaseapppatient.model.LocalizedStrings
 import com.dra.speakeaseapppatient.ui.components.IconTextButton
 import com.dra.speakeaseapppatient.utils.TextToSpeechHelper
 import com.dra.speakeaseapppatient.viewmodel.PainViewModel
+import java.util.Locale
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun PainScreen(
     textToSpeechHelper: TextToSpeechHelper,
-    viewModel: PainViewModel = viewModel(factory = PainViewModelFactory(textToSpeechHelper))
+    viewModel: PainViewModel = viewModel(factory = PainViewModelFactory(textToSpeechHelper)),
+    selectedLocale: MutableState<Locale>
 ) {
     val selectedTabIndex by viewModel.selectedTabIndex
-    val tabs = listOf("Level", "Location")
+    val tabs: List<String> = LocalizedStrings.getPainTabs(selectedLocale.value)
+
     var showLanguageDialog by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -96,16 +101,17 @@ fun PainScreen(
             }
 
             when (selectedTabIndex) {
-                0 -> Level(viewModel)
+                0 -> Level(viewModel, selectedLocale)
                 1 -> Location(viewModel)
             }
         }
     }
     if (showLanguageDialog) {
         LanguagePickerDialog(
+            currentLocale = selectedLocale.value,
             onLanguageSelected = { locale ->
                 textToSpeechHelper.setLanguage(locale)
-                showLanguageDialog = false
+                selectedLocale.value = locale
             },
             onDismiss = { showLanguageDialog = false }
         )
@@ -125,8 +131,8 @@ class PainViewModelFactory(
 }
 
 @Composable
-fun Level(viewModel: PainViewModel) {
-    val buttonItems = viewModel.getButtonItems()
+fun Level(viewModel: PainViewModel, selectedLocale: MutableState<Locale>) {
+    val buttonItems = LocalizedStrings.getPainButtonLabels(selectedLocale.value)
 
     Box(
         modifier = Modifier

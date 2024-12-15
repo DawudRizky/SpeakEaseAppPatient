@@ -28,6 +28,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,15 +40,19 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dra.speakeaseapppatient.utils.TextToSpeechHelper
 import com.dra.speakeaseapppatient.viewmodel.BicaraViewModel
+import java.util.Locale
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun SpeakScreen(
     textToSpeechHelper: TextToSpeechHelper,
-    viewModel: BicaraViewModel = viewModel()
+    viewModel: BicaraViewModel = viewModel(),
+    selectedLocale: MutableState<Locale> // Pass the state as MutableState
 ) {
     val textInput by viewModel.textInput.collectAsState()
     val history by viewModel.history.collectAsState()
+    // Current selected locale state
+    var currentLocale by remember { mutableStateOf(Locale.getDefault()) }
     var showLanguageDialog by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -167,9 +172,10 @@ fun SpeakScreen(
 
     if (showLanguageDialog) {
         LanguagePickerDialog(
+            currentLocale = selectedLocale.value, // Pass the current locale
             onLanguageSelected = { locale ->
                 textToSpeechHelper.setLanguage(locale)
-                showLanguageDialog = false
+                selectedLocale.value = locale
             },
             onDismiss = { showLanguageDialog = false }
         )

@@ -18,16 +18,16 @@ class PainViewModel(
 
     val tappedPosition: MutableState<Offset?> = mutableStateOf(null)
 
-    private val buttonItems = listOf(
-        Pair(R.drawable.pain_0, "Tidak sakit"),
-        Pair(R.drawable.pain_2, "Sedikit sakit"),
-        Pair(R.drawable.pain_4, "Sedikit lebih sakit"),
-        Pair(R.drawable.pain_6, "lebih sakit"),
-        Pair(R.drawable.pain_8, "Sangat sakit"),
-        Pair(R.drawable.pain_10, "Tersakit")
-    )
-
-    fun getButtonItems() = buttonItems
+//    private val buttonItems = listOf(
+//        Pair(R.drawable.pain_0, "Tidak sakit"),
+//        Pair(R.drawable.pain_2, "Sedikit sakit"),
+//        Pair(R.drawable.pain_4, "Sedikit lebih sakit"),
+//        Pair(R.drawable.pain_6, "lebih sakit"),
+//        Pair(R.drawable.pain_8, "Sangat sakit"),
+//        Pair(R.drawable.pain_10, "Tersakit")
+//    )
+//
+//    fun getButtonItems() = buttonItems
 
     fun onButtonClicked(description: String) {
         viewModelScope.launch {

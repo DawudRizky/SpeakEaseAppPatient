@@ -15,6 +15,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,20 +23,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.dra.speakeaseapppatient.R
+import com.dra.speakeaseapppatient.model.LocalizedStrings
 import com.dra.speakeaseapppatient.ui.components.IconTextButton
 import com.dra.speakeaseapppatient.utils.TextToSpeechHelper
+import java.util.Locale
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun NeedScreen(textToSpeechHelper: TextToSpeechHelper) {
-    val buttonItems = listOf(
-        Pair(R.drawable.need_help, "Tolong"),
-        Pair(R.drawable.need_drink, "Minum"),
-        Pair(R.drawable.need_meal, "Makan"),
-        Pair(R.drawable.need_medicine, "Obat"),
-        Pair(R.drawable.need_wc, "Kamar Mandi"),
-        Pair(R.drawable.need_luggage, "Barang")
-    )
+fun NeedScreen(
+    textToSpeechHelper: TextToSpeechHelper,
+    selectedLocale: MutableState<Locale>
+) {
+    val buttonItems = LocalizedStrings.getNeedButtonLabels(selectedLocale.value)
     var showLanguageDialog by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -70,9 +69,10 @@ fun NeedScreen(textToSpeechHelper: TextToSpeechHelper) {
 
     if (showLanguageDialog) {
         LanguagePickerDialog(
+            currentLocale = selectedLocale.value,
             onLanguageSelected = { locale ->
                 textToSpeechHelper.setLanguage(locale)
-                showLanguageDialog = false
+                selectedLocale.value = locale
             },
             onDismiss = { showLanguageDialog = false }
         )
