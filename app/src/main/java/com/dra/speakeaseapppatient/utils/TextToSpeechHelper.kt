@@ -7,27 +7,16 @@ import java.util.Locale
 
 class TextToSpeechHelper(context: Context) {
 
-    private lateinit var textToSpeech: TextToSpeech  // Use lateinit for deferred initialization
+    private lateinit var textToSpeech: TextToSpeech
 
     init {
         textToSpeech = TextToSpeech(context) { status ->
             if (status == TextToSpeech.SUCCESS) {
-                textToSpeech.language = Locale.getDefault() // Initialize language once TTS is ready
+                textToSpeech.language = Locale.getDefault()
             }
         }
     }
 
-//    fun speak(text: String) {
-//        if (::textToSpeech.isInitialized) {  // Check if textToSpeech is initialized
-//            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
-//        }
-//    }
-//
-//    fun shutdown() {
-//        if (::textToSpeech.isInitialized) {
-//            textToSpeech.shutdown()
-//        }
-//    }
     fun speak(text: String) {
         textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
     }

@@ -46,17 +46,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dra.speakeaseapppatient.R
 import com.dra.speakeaseapppatient.ui.components.IconTextButton
 import com.dra.speakeaseapppatient.utils.TextToSpeechHelper
-import com.dra.speakeaseapppatient.viewmodel.SakitViewModel
+import com.dra.speakeaseapppatient.viewmodel.PainViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun SakitScreen(
+fun PainScreen(
     textToSpeechHelper: TextToSpeechHelper,
-    viewModel: SakitViewModel = viewModel(factory = SakitViewModelFactory(textToSpeechHelper))
+    viewModel: PainViewModel = viewModel(factory = PainViewModelFactory(textToSpeechHelper))
 ) {
     val selectedTabIndex by viewModel.selectedTabIndex
-    val tappedPosition by viewModel.tappedPosition
-    val tabs = listOf("Tingkatan", "Lokasi")
+    val tabs = listOf("Level", "Location")
     var showLanguageDialog by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -97,8 +96,8 @@ fun SakitScreen(
             }
 
             when (selectedTabIndex) {
-                0 -> Tingkatan(viewModel)
-                1 -> Lokasi(viewModel)
+                0 -> Level(viewModel)
+                1 -> Location(viewModel)
             }
         }
     }
@@ -113,19 +112,20 @@ fun SakitScreen(
     }
 }
 
-class SakitViewModelFactory(
+@Suppress("UNCHECKED_CAST")
+class PainViewModelFactory(
     private val textToSpeechHelper: TextToSpeechHelper
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(SakitViewModel::class.java)) {
-            return SakitViewModel(textToSpeechHelper) as T
+        if (modelClass.isAssignableFrom(PainViewModel::class.java)) {
+            return PainViewModel(textToSpeechHelper) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
 
 @Composable
-fun Tingkatan(viewModel: SakitViewModel) {
+fun Level(viewModel: PainViewModel) {
     val buttonItems = viewModel.getButtonItems()
 
     Box(
@@ -151,7 +151,7 @@ fun Tingkatan(viewModel: SakitViewModel) {
 }
 
 @Composable
-fun Lokasi(viewModel: SakitViewModel) {
+fun Location(viewModel: PainViewModel) {
     val tappedPosition by viewModel.tappedPosition
 
     Box(

@@ -17,7 +17,7 @@ class BicaraViewModel : ViewModel() {
 
     fun addToHistory(input: String) {
         if (input.isNotBlank()) {
-            _history.value = listOf(input) + _history.value.take(9) // Keep only the last 10 items
+            _history.value = listOf(input) + _history.value.take(9)
         }
     }
 }

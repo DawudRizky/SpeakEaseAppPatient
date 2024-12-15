@@ -1,6 +1,7 @@
 package com.dra.speakeaseapppatient.viewmodel
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.ViewModel
@@ -9,11 +10,11 @@ import com.dra.speakeaseapppatient.R
 import com.dra.speakeaseapppatient.utils.TextToSpeechHelper
 import kotlinx.coroutines.launch
 
-class SakitViewModel(
+class PainViewModel(
     private val textToSpeechHelper: TextToSpeechHelper
 ) : ViewModel() {
 
-    val selectedTabIndex: MutableState<Int> = mutableStateOf(0)
+    val selectedTabIndex: MutableState<Int> = mutableIntStateOf(0)
 
     val tappedPosition: MutableState<Offset?> = mutableStateOf(null)
 

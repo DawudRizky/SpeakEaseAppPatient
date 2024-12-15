@@ -2,14 +2,12 @@ package com.dra.speakeaseapppatient.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.dra.speakeaseapppatient.model.Profile
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
-class ProfilViewModel : ViewModel() {
+class ProfileViewModel : ViewModel() {
     private val _profile = MutableStateFlow(Profile())
     val profile: StateFlow<Profile> get() = _profile
 
@@ -28,16 +26,15 @@ class ProfilViewModel : ViewModel() {
                     if (data != null) {
                         _profile.value = data
                     } else {
-                        Log.e("ProfilViewModel", "Data is null")
+                        Log.e("ProfileViewModel", "Data is null")
                     }
                 } else {
-                    Log.e("ProfilViewModel", "Snapshot does not exist")
+                    Log.e("ProfileViewModel", "Snapshot does not exist")
                 }
             }
             .addOnFailureListener { exception ->
-                Log.e("ProfilViewModel", "Failed to fetch data", exception)
+                Log.e("ProfileViewModel", "Failed to fetch data", exception)
             }
     }
-
 }
 

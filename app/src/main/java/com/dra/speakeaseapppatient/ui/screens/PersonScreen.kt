@@ -27,14 +27,14 @@ import com.dra.speakeaseapppatient.utils.TextToSpeechHelper
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun OrangScreen(textToSpeechHelper: TextToSpeechHelper) {
+fun PersonScreen(textToSpeechHelper: TextToSpeechHelper) {
     val buttonItems = listOf(
-        Pair(R.drawable.doctor, "Dokter"),
-        Pair(R.drawable.nurse, "Perawat"),
-        Pair(R.drawable.parent, "Orang Tua"),
-        Pair(R.drawable.children, "Anak"),
-        Pair(R.drawable.marriage, "Pasangan"),
-        Pair(R.drawable.siblings, "Saudara")
+        Pair(R.drawable.person_doctor, "Dokter"),
+        Pair(R.drawable.person_nurse, "Perawat"),
+        Pair(R.drawable.person_parent, "Orang Tua"),
+        Pair(R.drawable.person_children, "Anak"),
+        Pair(R.drawable.person_marriage, "Pasangan"),
+        Pair(R.drawable.person_siblings, "Saudara")
     )
     var showLanguageDialog by remember { mutableStateOf(false) }
 

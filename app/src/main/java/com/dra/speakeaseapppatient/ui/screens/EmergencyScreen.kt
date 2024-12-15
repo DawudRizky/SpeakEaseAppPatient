@@ -4,9 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Button
@@ -24,13 +26,14 @@ fun EmergencyScreen(onExit: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.error),
-        contentAlignment = Alignment.Center
+            .background(MaterialTheme.colorScheme.error)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 16.dp)
+                .systemBarsPadding()
         ) {
             Text(
                 text = "EMERGENCY",
@@ -44,25 +47,40 @@ fun EmergencyScreen(onExit: () -> Unit) {
                 color = MaterialTheme.colorScheme.onError,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
+        }
 
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .aspectRatio(1f)
+                .align(Alignment.Center)
+        ) {
             Icon(
-                imageVector = Icons.Default.Notifications, // Replace with a bell icon if available in your icon set
+                imageVector = Icons.Default.Notifications,
                 contentDescription = "Bell Icon",
                 tint = MaterialTheme.colorScheme.onError,
-                modifier = Modifier
-                    .size(64.dp)
-                    .padding(bottom = 16.dp)
+                modifier = Modifier.fillMaxSize()
             )
+        }
 
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(16.dp)
+                .systemBarsPadding()
+        ) {
             Text(
                 text = "Medical staff on their way",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onError,
-                modifier = Modifier.padding(bottom = 24.dp)
+                color = MaterialTheme.colorScheme.onError
             )
 
             Button(
                 onClick = onExit,
+                modifier = Modifier
+                    .fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.onError)
             ) {
                 Text(
@@ -73,4 +91,3 @@ fun EmergencyScreen(onExit: () -> Unit) {
         }
     }
 }
-

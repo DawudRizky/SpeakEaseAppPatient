@@ -18,7 +18,10 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,26 +32,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.dra.speakeaseapppatient.viewmodel.ProfilViewModel
+import com.dra.speakeaseapppatient.viewmodel.ProfileViewModel
 import kotlinx.coroutines.delay
 
 @Composable
-fun ProfilScreen(
-    viewModel: ProfilViewModel = viewModel(),
+fun ProfileScreen(
+    viewModel: ProfileViewModel = viewModel(),
     onLogout: () -> Unit
 ) {
     val profile by viewModel.profile.collectAsState()
 
-    // Fetch data periodically
     LaunchedEffect(Unit) {
         while (true) {
-            viewModel.fetchProfile() // Trigger a fetch in the ViewModel
-            delay(10_000L) // Fetch every 10 seconds
+            viewModel.fetchProfile()
+            delay(10_000L)
         }
     }
 
@@ -57,7 +60,6 @@ fun ProfilScreen(
         contentPadding = PaddingValues(16.dp)
     ) {
         item {
-            // Profile Box
             Box(
                 modifier = Modifier
                     .padding(16.dp, 16.dp, 16.dp, 0.dp)
@@ -71,53 +73,79 @@ fun ProfilScreen(
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Rounded picture frame
                     Box(
                         modifier = Modifier
                             .size(64.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.primary),
+                            .clip(CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
-                        // Placeholder for image
-                        Text(
-                            text = "Pic",
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                color = Color.White,
-                                fontSize = 14.sp
-                            )
+                        Icon(
+                            imageVector = Icons.Default.AccountCircle,
+                            contentDescription = "Account",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(0.dp)
                         )
                     }
 
                     Spacer(modifier = Modifier.width(16.dp))
 
-                    // Texts for Name, Gender, and Age
-                    Column {
-                        Text(
-                            text = "Name: ${profile.name}",
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                fontSize = 16.sp
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column {
+                            Text(
+                                text = "Name",
+                                style = MaterialTheme.typography.bodyMedium.copy(
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
                             )
-                        )
-                        Text(
-                            text = "Gender: ${profile.gender}",
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                fontSize = 16.sp
+                            Text(
+                                text = "Gender",
+                                style = MaterialTheme.typography.bodyMedium.copy(
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
                             )
-                        )
-                        Text(
-                            text = "Age: ${profile.age}",
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                fontSize = 16.sp
+                            Text(
+                                text = "Age",
+                                style = MaterialTheme.typography.bodyMedium.copy(
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
                             )
-                        )
+                        }
+
+                        Spacer(modifier = Modifier.width(16.dp))
+
+                        Column {
+                            Text(
+                                text = profile.name,
+                                style = MaterialTheme.typography.bodyMedium.copy(
+                                    fontSize = 16.sp
+                                )
+                            )
+                            Text(
+                                text = profile.gender,
+                                style = MaterialTheme.typography.bodyMedium.copy(
+                                    fontSize = 16.sp
+                                )
+                            )
+                            Text(
+                                text = profile.age.toString(),
+                                style = MaterialTheme.typography.bodyMedium.copy(
+                                    fontSize = 16.sp
+                                )
+                            )
+                        }
                     }
                 }
             }
         }
 
         item {
-            // Diagnoses Grid
             ReusableGrid(
                 tableName = "Diagnoses",
                 headers = listOf("Condition", "Diagnosed By"),
@@ -126,7 +154,6 @@ fun ProfilScreen(
         }
 
         item {
-            // Actions By Staff Grid
             ReusableGrid(
                 tableName = "Actions",
                 headers = listOf("Action", "Performed By"),
@@ -135,7 +162,6 @@ fun ProfilScreen(
         }
 
         item {
-            // Medicines Taken Grid
             ReusableGrid(
                 tableName = "Medicine",
                 headers = listOf("Medicine", "Dosage"),
@@ -144,7 +170,6 @@ fun ProfilScreen(
         }
 
         item {
-            // Checkups Grid
             ReusableGrid(
                 tableName = "Checkups",
                 headers = listOf("Checkup", "Performed By"),
@@ -205,7 +230,7 @@ fun ReusableGrid(
                 .padding(16.dp)
         ) {
             LazyVerticalGrid(
-                columns = GridCells.Fixed(headers.size), // Number of columns depends on headers
+                columns = GridCells.Fixed(headers.size),
                 modifier = modifier
                     .fillMaxWidth()
                     .height(calculateDynamicHeight(headers.size, totalItems)),
@@ -227,11 +252,11 @@ fun ReusableGrid(
                     ) {
                         BasicText(
                             text = when (row) {
-                                0 -> headers[column] // Headers
+                                0 -> headers[column]
                                 else -> {
-                                    val itemIndex = row - 1 // Subtract header row
+                                    val itemIndex = row - 1
                                     if (itemIndex < items.size) {
-                                        items[itemIndex][column] // Access the specific column for the item
+                                        items[itemIndex][column]
                                     } else {
                                         "" // Fallback for empty cells if needed
                                     }
@@ -250,11 +275,9 @@ fun ReusableGrid(
 }
 
 fun calculateDynamicHeight(columns: Int, totalItems: Int): Dp {
-    // Calculate the number of rows required
-    val rows = (totalItems + columns - 1) / columns // Ceiling of totalItems / columns
-    // Determine the height per row (assuming each cell has a fixed height of 64.dp + padding)
-    val rowHeight = 64.dp + 4.dp // Cell height + padding
-    return rows * rowHeight // Total height = number of rows * height per row
+    val rows = (totalItems + columns - 1) / columns
+    val rowHeight = 64.dp + 4.dp
+    return rows * rowHeight
 }
 
 

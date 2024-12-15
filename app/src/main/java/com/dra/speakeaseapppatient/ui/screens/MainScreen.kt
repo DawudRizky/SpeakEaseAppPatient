@@ -26,14 +26,14 @@ fun MainScreen(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = NavRoute.Bicara.route,
+            startDestination = NavRoute.Speak.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(NavRoute.Bicara.route) { BicaraScreen(textToSpeechHelper = textToSpeechHelper) }
-            composable(NavRoute.Sakit.route) { SakitScreen(textToSpeechHelper) }
-            composable(NavRoute.Butuh.route) { ButuhScreen(textToSpeechHelper) }
-            composable(NavRoute.Orang.route) { OrangScreen(textToSpeechHelper) }
-            composable(NavRoute.Profil.route) { ProfilScreen(onLogout = onLogout) }
+            composable(NavRoute.Speak.route) { SpeakScreen(textToSpeechHelper = textToSpeechHelper) }
+            composable(NavRoute.Pain.route) { PainScreen(textToSpeechHelper) }
+            composable(NavRoute.Need.route) { NeedScreen(textToSpeechHelper) }
+            composable(NavRoute.Person.route) { PersonScreen(textToSpeechHelper) }
+            composable(NavRoute.Profile.route) { ProfileScreen(onLogout = onLogout) }
         }
     }
 }

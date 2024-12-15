@@ -19,15 +19,24 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dra.speakeaseapppatient.R
+import com.dra.speakeaseapppatient.viewmodel.ProfileViewModel
 
 @Composable
-fun TopBar(onEmergencyClick: () -> Unit) {
+fun TopBar(
+    viewModel: ProfileViewModel = viewModel(),
+    onEmergencyClick: () -> Unit
+) {
+    val profile by viewModel.profile.collectAsState()
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -43,7 +52,7 @@ fun TopBar(onEmergencyClick: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(id = R.drawable.asset_1),
+                painter = painterResource(id = R.drawable.logo),
                 contentDescription = "App Logo",
                 modifier = Modifier.fillMaxHeight()
             )
@@ -55,16 +64,26 @@ fun TopBar(onEmergencyClick: () -> Unit) {
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text = stringResource(R.string.nama_pasien),
+                    text = profile.name.ifEmpty { "Unknown Name" },
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onPrimary,
-                    maxLines = 1
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
+
+                val diagnosesText = when {
+                    profile.diagnoses.isEmpty() -> "No Diagnoses"
+                    profile.diagnoses.size > 3 ->
+                        "${profile.diagnoses[0].condition}, ${profile.diagnoses[1].condition}..."
+                    else ->
+                        profile.diagnoses.joinToString(", ") { it.condition }
+                }
                 Text(
-                    text = stringResource(R.string.penyakit),
+                    text = diagnosesText,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onPrimary,
-                    maxLines = 1
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
 

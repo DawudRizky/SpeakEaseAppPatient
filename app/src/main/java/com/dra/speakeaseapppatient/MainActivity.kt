@@ -73,17 +73,17 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @Deprecated("This method has been deprecated")
     @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
         if (backPressedOnce) {
-            finishAffinity() // Terminates the app
+            finishAffinity()
             return
         }
 
         backPressedOnce = true
         Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show()
 
-        // Reset the flag after 2 seconds
         handler.postDelayed({ backPressedOnce = false }, 2000)
     }
 }

@@ -39,35 +39,15 @@ fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-//        Text(
-//            text = "Login",
-//            style = MaterialTheme.typography.headlineMedium,
-//            modifier = Modifier.padding(bottom = 16.dp)
-//        )
-//
-//        OutlinedTextField(
-//            value = email,
-//            onValueChange = { viewModel.updateEmail(it) },
-//            label = { Text("Email") },
-//            modifier = Modifier.fillMaxWidth()
-//        )
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        OutlinedTextField(
-//            value = password,
-//            onValueChange = { viewModel.updatePassword(it) },
-//            label = { Text("Password") },
-//            modifier = Modifier.fillMaxWidth(),
-//            visualTransformation = PasswordVisualTransformation()
-//        )
         TextField(
             value = email,
             onValueChange = { viewModel.updateEmail(it) },
             label = { Text("Email") },
             modifier = Modifier.fillMaxWidth()
         )
+
         Spacer(modifier = Modifier.height(8.dp))
+
         TextField(
             value = password,
             onValueChange = { viewModel.updatePassword(it) },

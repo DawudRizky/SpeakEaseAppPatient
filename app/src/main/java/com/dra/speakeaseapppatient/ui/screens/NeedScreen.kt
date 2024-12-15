@@ -27,14 +27,14 @@ import com.dra.speakeaseapppatient.utils.TextToSpeechHelper
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ButuhScreen(textToSpeechHelper: TextToSpeechHelper) {
+fun NeedScreen(textToSpeechHelper: TextToSpeechHelper) {
     val buttonItems = listOf(
-        Pair(R.drawable.person_raised_hand_96dp_ffffff_fill0_wght400_grad0_opsz48, "Tolong"),
-        Pair(R.drawable.water_full_96dp_ffffff_fill0_wght400_grad0_opsz48, "Minum"),
-        Pair(R.drawable.fork_spoon_96dp_ffffff_fill0_wght400_grad0_opsz48, "Makan"),
-        Pair(R.drawable.pill_96dp_ffffff_fill0_wght400_grad0_opsz48, "Obat"),
-        Pair(R.drawable.wc_96dp_ffffff_fill0_wght400_grad0_opsz48, "Kamar Mandi"),
-        Pair(R.drawable.luggage_96dp_ffffff_fill0_wght400_grad0_opsz48, "Barang")
+        Pair(R.drawable.need_help, "Tolong"),
+        Pair(R.drawable.need_drink, "Minum"),
+        Pair(R.drawable.need_meal, "Makan"),
+        Pair(R.drawable.need_medicine, "Obat"),
+        Pair(R.drawable.need_wc, "Kamar Mandi"),
+        Pair(R.drawable.need_luggage, "Barang")
     )
     var showLanguageDialog by remember { mutableStateOf(false) }
 
@@ -50,7 +50,7 @@ fun ButuhScreen(textToSpeechHelper: TextToSpeechHelper) {
         floatingActionButtonPosition = FabPosition.End
     ) {
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 160.dp), // Minimum button size
+            columns = GridCells.Adaptive(minSize = 160.dp),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),

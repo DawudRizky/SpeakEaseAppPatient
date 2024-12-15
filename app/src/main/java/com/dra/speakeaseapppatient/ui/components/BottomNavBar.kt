@@ -14,11 +14,11 @@ import com.dra.speakeaseapppatient.R
 import com.dra.speakeaseapppatient.model.BottomNavItem
 
 val items = listOf(
-    BottomNavItem("bicara", "Bicara", R.drawable.outline_record_voice_over_24),
-    BottomNavItem("sakit", "Sakit", R.drawable.baseline_healing_24),
-    BottomNavItem("butuh", "Butuh", R.drawable.outline_feedback_24),
-    BottomNavItem("orang", "Orang", R.drawable.outline_people_alt_24),
-    BottomNavItem("profil", "Profil", R.drawable.outline_account_circle_24)
+    BottomNavItem("speak", "Speak", R.drawable.nav_speak),
+    BottomNavItem("pain", "Pain", R.drawable.nav_pain),
+    BottomNavItem("need", "Need", R.drawable.nav_need),
+    BottomNavItem("person", "Person", R.drawable.nav_person),
+    BottomNavItem("profile", "Profile", R.drawable.nav_profile)
 )
 
 @Composable

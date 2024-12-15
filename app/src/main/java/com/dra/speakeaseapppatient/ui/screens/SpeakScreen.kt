@@ -18,9 +18,9 @@ import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -42,7 +42,7 @@ import com.dra.speakeaseapppatient.viewmodel.BicaraViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun BicaraScreen(
+fun SpeakScreen(
     textToSpeechHelper: TextToSpeechHelper,
     viewModel: BicaraViewModel = viewModel()
 ) {
@@ -100,7 +100,6 @@ fun BicaraScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // History Box
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -111,7 +110,6 @@ fun BicaraScreen(
                     .padding(16.dp)
             ) {
                 Column {
-                    // Centered "History" Title
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -124,7 +122,6 @@ fun BicaraScreen(
                         )
                     }
 
-                    // History Entries with Divider
                     LazyColumn(
                         modifier = Modifier.fillMaxWidth()
                     ) {
@@ -152,9 +149,8 @@ fun BicaraScreen(
                                     )
                                 }
 
-                                // Divider between entries, except after the last one
                                 if (index < history.size - 1) {
-                                    Divider(
+                                    HorizontalDivider(
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .padding(horizontal = 8.dp),

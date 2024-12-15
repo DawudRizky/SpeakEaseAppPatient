@@ -3,7 +3,7 @@
     <style name="Theme.YourApp" parent="Theme.AppCompat.Light">
         <!-- Splash screen attributes -->
         <item name="android:windowSplashScreenBackground">@color/splash_bg</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/asset_1</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/logo</item>
         <item name="android:windowSplashScreenAnimationDuration">1000</item> <!-- Optional -->
         <item name="postSplashScreenTheme">@style/Theme.YourApp.Main</item>
     </style>
