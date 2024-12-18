@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class BicaraViewModel : ViewModel() {
+class SpeakViewModel : ViewModel() {
     private val _textInput = MutableStateFlow("")
     val textInput: StateFlow<String> = _textInput
 

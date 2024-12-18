@@ -1,6 +1,7 @@
 package com.dra.speakeaseapppatient.ui.screens
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,22 +39,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.dra.speakeaseapppatient.model.LocalizedStrings
 import com.dra.speakeaseapppatient.utils.TextToSpeechHelper
-import com.dra.speakeaseapppatient.viewmodel.BicaraViewModel
+import com.dra.speakeaseapppatient.viewmodel.SpeakViewModel
+import com.google.firebase.database.FirebaseDatabase
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun SpeakScreen(
     textToSpeechHelper: TextToSpeechHelper,
-    viewModel: BicaraViewModel = viewModel(),
-    selectedLocale: MutableState<Locale> // Pass the state as MutableState
+    viewModel: SpeakViewModel = viewModel(),
+    selectedLocale: MutableState<Locale>
 ) {
     val textInput by viewModel.textInput.collectAsState()
     val history by viewModel.history.collectAsState()
-    // Current selected locale state
-    var currentLocale by remember { mutableStateOf(Locale.getDefault()) }
     var showLanguageDialog by remember { mutableStateOf(false) }
+    val speakText: List<String> = LocalizedStrings.getSpeakText(selectedLocale.value)
+
+    val database = FirebaseDatabase.getInstance("https://speakease-eb1ab-default-rtdb.asia-southeast1.firebasedatabase.app/")
+    val userRef = database.getReference("profile/history")
 
     Scaffold(
         floatingActionButton = {
@@ -76,7 +83,7 @@ fun SpeakScreen(
             OutlinedTextField(
                 value = textInput,
                 onValueChange = { viewModel.updateText(it) },
-                label = { Text("Enter text") },
+                label = { Text(speakText[0]) },
                 modifier = Modifier.fillMaxWidth(),
                 trailingIcon = {
                     if (textInput.isNotEmpty()) {
@@ -96,11 +103,26 @@ fun SpeakScreen(
                 onClick = {
                     textToSpeechHelper.speak(textInput)
                     viewModel.addToHistory(textInput)
+
+                    val timestamp = System.currentTimeMillis()
+                    val formattedTimestamp = formatTimestamp(timestamp)
+                    val historyItem = mapOf(
+                        "text" to textInput,
+                        "timestamp" to formattedTimestamp
+                    )
+                    userRef.push().setValue(historyItem)
+                        .addOnSuccessListener {
+                            Log.d("SpeakScreen", "History saved successfully.")
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.e("SpeakScreen", "Error saving history: ${exception.message}")
+                        }
+
                     viewModel.updateText("")
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Speak")
+                Text(speakText[1])
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -122,7 +144,7 @@ fun SpeakScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "History",
+                            text = speakText[2],
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -172,7 +194,7 @@ fun SpeakScreen(
 
     if (showLanguageDialog) {
         LanguagePickerDialog(
-            currentLocale = selectedLocale.value, // Pass the current locale
+            currentLocale = selectedLocale.value,
             onLanguageSelected = { locale ->
                 textToSpeechHelper.setLanguage(locale)
                 selectedLocale.value = locale
@@ -180,4 +202,9 @@ fun SpeakScreen(
             onDismiss = { showLanguageDialog = false }
         )
     }
+}
+
+fun formatTimestamp(timestamp: Long): String {
+    val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+    return sdf.format(Date(timestamp))
 }

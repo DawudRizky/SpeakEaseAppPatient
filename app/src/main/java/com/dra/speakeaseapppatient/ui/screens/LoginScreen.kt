@@ -21,11 +21,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dra.speakeaseapppatient.viewmodel.LoginViewModel
+import com.dra.speakeaseapppatient.viewmodel.ProfileViewModel
 
 @Composable
 fun LoginScreen(
     onLoginSuccess: () -> Unit,
-    viewModel: LoginViewModel = viewModel()
+    viewModel: LoginViewModel = viewModel(),
+    profileViewModel: ProfileViewModel = viewModel()
 ) {
     val email by viewModel.email.collectAsState()
     val password by viewModel.password.collectAsState()

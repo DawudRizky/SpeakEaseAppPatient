@@ -5,27 +5,24 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.dra.speakeaseapppatient.R
-import com.dra.speakeaseapppatient.model.BottomNavItem
-
-val items = listOf(
-    BottomNavItem("speak", "Speak", R.drawable.nav_speak),
-    BottomNavItem("pain", "Pain", R.drawable.nav_pain),
-    BottomNavItem("need", "Need", R.drawable.nav_need),
-    BottomNavItem("person", "Person", R.drawable.nav_person),
-    BottomNavItem("profile", "Profile", R.drawable.nav_profile)
-)
+import com.dra.speakeaseapppatient.model.LocalizedStrings
+import java.util.Locale
 
 @Composable
-fun BottomNavBar(navController: NavController) {
+fun BottomNavBar(
+    navController: NavController,
+    selectedLocale: MutableState<Locale>
+) {
     NavigationBar {
         val currentDestination by navController.currentBackStackEntryAsState()
         val currentRoute = currentDestination?.destination?.route
+        val items = LocalizedStrings.getNavLabels(selectedLocale.value)
 
         items.forEach { item ->
             NavigationBarItem(

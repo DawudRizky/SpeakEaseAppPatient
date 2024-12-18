@@ -3,8 +3,7 @@ package com.dra.speakeaseapppatient.ui.screens
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,17 +15,17 @@ import com.dra.speakeaseapppatient.utils.TextToSpeechHelper
 import java.util.Locale
 
 @Composable
-fun MainScreen(
+fun CoreScreen(
     textToSpeechHelper: TextToSpeechHelper,
+    selectedLocale: MutableState<Locale>,
     onNavigateToEmergency: () -> Unit,
     onLogout: () -> Unit
 ) {
-    val selectedLocale = remember { mutableStateOf(Locale.ENGLISH) }
     val navController = rememberNavController()
 
     Scaffold(
         topBar = { TopBar(onEmergencyClick = onNavigateToEmergency) },
-        bottomBar = { BottomNavBar(navController) }
+        bottomBar = { BottomNavBar(navController, selectedLocale = selectedLocale) }
     ) { innerPadding ->
         NavHost(
             navController = navController,
@@ -54,3 +53,4 @@ fun MainScreen(
         }
     }
 }
+

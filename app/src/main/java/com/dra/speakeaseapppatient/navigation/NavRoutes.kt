@@ -1,10 +1,10 @@
 package com.dra.speakeaseapppatient.navigation
 
 sealed class NavRoute(val route: String) {
-    object Speak : NavRoute("speak")
-    object Pain : NavRoute("pain")
-    object Need : NavRoute("need")
-    object Person : NavRoute("person")
-    object Profile : NavRoute("profile")
-    object Emergency : NavRoute("emergency")
+    data object Speak : NavRoute("speak")
+    data object Pain : NavRoute("pain")
+    data object Need : NavRoute("need")
+    data object Person : NavRoute("person")
+    data object Profile : NavRoute("profile")
+    data object Emergency : NavRoute("emergency")
 }

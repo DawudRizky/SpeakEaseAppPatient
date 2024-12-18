@@ -1,6 +1,7 @@
 package com.dra.speakeaseapppatient.ui.screens
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,10 +23,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.dra.speakeaseapppatient.R
 import com.dra.speakeaseapppatient.model.LocalizedStrings
 import com.dra.speakeaseapppatient.ui.components.IconTextButton
 import com.dra.speakeaseapppatient.utils.TextToSpeechHelper
+import com.google.firebase.database.FirebaseDatabase
 import java.util.Locale
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -36,6 +37,9 @@ fun NeedScreen(
 ) {
     val buttonItems = LocalizedStrings.getNeedButtonLabels(selectedLocale.value)
     var showLanguageDialog by remember { mutableStateOf(false) }
+
+    val database = FirebaseDatabase.getInstance("https://speakease-eb1ab-default-rtdb.asia-southeast1.firebasedatabase.app/")
+    val userRef = database.getReference("profile/history")
 
     Scaffold(
         floatingActionButton = {
@@ -61,7 +65,23 @@ fun NeedScreen(
                 IconTextButton(
                     iconRes = iconRes,
                     text = description,
-                    onClick = { textToSpeechHelper.speak(description) }
+                    onClick = {
+                        textToSpeechHelper.speak(description)
+
+                        val timestamp = System.currentTimeMillis()
+                        val formattedTimestamp = formatTimestamp(timestamp)
+                        val historyItem = mapOf(
+                            "text" to description,
+                            "timestamp" to formattedTimestamp
+                        )
+                        userRef.push().setValue(historyItem)
+                            .addOnSuccessListener {
+                                Log.d("NeedScreen", "History saved successfully.")
+                            }
+                            .addOnFailureListener { exception ->
+                                Log.e("NeedScreen", "Error saving history: ${exception.message}")
+                            }
+                    }
                 )
             }
         }

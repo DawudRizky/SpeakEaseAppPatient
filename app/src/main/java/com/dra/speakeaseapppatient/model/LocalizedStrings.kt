@@ -79,4 +79,55 @@ object LocalizedStrings {
             )
         }
     }
+
+    fun getEmergencyText(locale: Locale): List<String> {
+        return when (locale) {
+            Locale("id") -> listOf(
+                "DARURAT",
+                "MEMANGGIL TENAGA MEDIS",
+                "Tenaga medis dalam perjalanan",
+                "Hentikan Panggilan Darurat"
+            )
+            else -> listOf(
+                "EMERGENCY",
+                "CALLING MEDICAL STAFF",
+                "Medical staff are on their way",
+                "Stop Emergency Call"
+            )
+        }
+    }
+
+    fun getSpeakText(locale: Locale): List<String> {
+        return when (locale) {
+            Locale("id") -> listOf(
+                "Masukan Teks",
+                "Bicara",
+                "Riwayat"
+            )
+            else -> listOf(
+                "Enter Text",
+                "Speak",
+                "History"
+            )
+        }
+    }
+
+    fun getNavLabels(locale: Locale): List<BottomNavItem> {
+        return when (locale) {
+            Locale("id") -> listOf(
+                BottomNavItem("speak", "Bicara", R.drawable.nav_speak),
+                BottomNavItem("pain", "Sakit", R.drawable.nav_pain),
+                BottomNavItem("need", "Butuh", R.drawable.nav_need),
+                BottomNavItem("person", "Orang", R.drawable.nav_person),
+                BottomNavItem("profile", "profil", R.drawable.nav_profile)
+            )
+            else -> listOf(
+                BottomNavItem("speak", "Speak", R.drawable.nav_speak),
+                BottomNavItem("pain", "Pain", R.drawable.nav_pain),
+                BottomNavItem("need", "Need", R.drawable.nav_need),
+                BottomNavItem("person", "Person", R.drawable.nav_person),
+                BottomNavItem("profile", "Profile", R.drawable.nav_profile)
+            )
+        }
+    }
 }

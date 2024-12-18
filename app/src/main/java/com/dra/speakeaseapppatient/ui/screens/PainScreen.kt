@@ -1,6 +1,7 @@
 package com.dra.speakeaseapppatient.ui.screens
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -49,6 +50,7 @@ import com.dra.speakeaseapppatient.model.LocalizedStrings
 import com.dra.speakeaseapppatient.ui.components.IconTextButton
 import com.dra.speakeaseapppatient.utils.TextToSpeechHelper
 import com.dra.speakeaseapppatient.viewmodel.PainViewModel
+import com.google.firebase.database.FirebaseDatabase
 import java.util.Locale
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -134,6 +136,9 @@ class PainViewModelFactory(
 fun Level(viewModel: PainViewModel, selectedLocale: MutableState<Locale>) {
     val buttonItems = LocalizedStrings.getPainButtonLabels(selectedLocale.value)
 
+    val database = FirebaseDatabase.getInstance("https://speakease-eb1ab-default-rtdb.asia-southeast1.firebasedatabase.app/")
+    val userRef = database.getReference("profile/history")
+
     Box(
         modifier = Modifier
             .padding(16.dp)
@@ -149,7 +154,23 @@ fun Level(viewModel: PainViewModel, selectedLocale: MutableState<Locale>) {
                 IconTextButton(
                     iconRes = iconRes,
                     text = description,
-                    onClick = { viewModel.onButtonClicked(description) }
+                    onClick = {
+                        viewModel.onButtonClicked(description)
+
+                        val timestamp = System.currentTimeMillis()
+                        val formattedTimestamp = formatTimestamp(timestamp)
+                        val historyItem = mapOf(
+                            "text" to description,
+                            "timestamp" to formattedTimestamp
+                        )
+                        userRef.push().setValue(historyItem)
+                            .addOnSuccessListener {
+                                Log.d("PainScreen", "History saved successfully.")
+                            }
+                            .addOnFailureListener { exception ->
+                                Log.e("PainScreen", "Error saving history: ${exception.message}")
+                            }
+                    }
                 )
             }
         }

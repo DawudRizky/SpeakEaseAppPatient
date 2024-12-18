@@ -8,15 +8,18 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.dra.speakeaseapppatient.navigation.NavRoute
 import com.dra.speakeaseapppatient.ui.screens.EmergencyScreen
 import com.dra.speakeaseapppatient.ui.screens.LoginScreen
-import com.dra.speakeaseapppatient.ui.screens.MainScreen
+import com.dra.speakeaseapppatient.ui.screens.CoreScreen
 import com.dra.speakeaseapppatient.utils.TextToSpeechHelper
 import com.google.firebase.auth.FirebaseAuth
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     private lateinit var textToSpeechHelper: TextToSpeechHelper
@@ -33,6 +36,8 @@ class MainActivity : ComponentActivity() {
             val auth = FirebaseAuth.getInstance()
             val isLoggedIn = auth.currentUser != null
 
+            val selectedLocale = remember { mutableStateOf(Locale.ENGLISH) }
+
             NavHost(
                 navController = navController,
                 startDestination = if (isLoggedIn) "main" else "login"
@@ -48,8 +53,9 @@ class MainActivity : ComponentActivity() {
                 }
 
                 composable("main") {
-                    MainScreen(
+                    CoreScreen(
                         textToSpeechHelper = textToSpeechHelper,
+                        selectedLocale = selectedLocale,
                         onNavigateToEmergency = {
                             navController.navigate(NavRoute.Emergency.route)
                         },
@@ -61,12 +67,15 @@ class MainActivity : ComponentActivity() {
                         }
                     )
                 }
+
                 composable(NavRoute.Emergency.route) {
-                    EmergencyScreen(onExit = {
-                        navController.navigate("main") {
-                            popUpTo("login") { inclusive = true }
+                    EmergencyScreen(
+                        selectedLocale = selectedLocale,
+                        onExit = {
+                            navController.navigate("main") {
+                                popUpTo("login") { inclusive = true }
+                            }
                         }
-                    }
                     )
                 }
             }

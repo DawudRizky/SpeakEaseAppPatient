@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 
-//    id("com.android.application")
     id("com.google.gms.google-services")
 }
 
@@ -52,7 +51,6 @@ dependencies {
 
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation ("com.google.firebase:firebase-auth-ktx")
-
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
