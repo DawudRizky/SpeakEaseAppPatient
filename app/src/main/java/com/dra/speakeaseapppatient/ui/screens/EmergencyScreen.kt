@@ -23,22 +23,26 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dra.speakeaseapppatient.model.LocalizedStrings
+import com.dra.speakeaseapppatient.viewmodel.ProfileViewModel
 import com.google.firebase.database.FirebaseDatabase
 import java.util.Locale
 
 @Composable
 fun EmergencyScreen(
     selectedLocale: MutableState<Locale>,
-    onExit: () -> Unit
+    onExit: () -> Unit,
+    viewModel: ProfileViewModel = viewModel()
 ) {
     val emergencyText: List<String> = LocalizedStrings.getEmergencyText(selectedLocale.value)
 
-    val database = FirebaseDatabase.getInstance("https://speakease-eb1ab-default-rtdb.asia-southeast1.firebasedatabase.app/")
-    val userRef = database.getReference("profile")
-
     LaunchedEffect(Unit) {
-        userRef.child("emergency").setValue(1)
+        viewModel.setEmergencyStatus(1) { success ->
+            if (!success) {
+                Log.e("EmergencyScreen", "Failed to update emergency status to 1.")
+            }
+        }
     }
 
     Box(
@@ -97,11 +101,11 @@ fun EmergencyScreen(
 
             Button(
                 onClick = {
-                    userRef.child("emergency").setValue(0).addOnCompleteListener {
-                        if (it.isSuccessful) {
+                    viewModel.setEmergencyStatus(0) { success ->
+                        if (success) {
                             onExit()
                         } else {
-                            Log.e("EmergencyScreen", "Failed to update emergency status.")
+                            Log.e("EmergencyScreen", "Failed to update emergency status to 0.")
                         }
                     }
                 },

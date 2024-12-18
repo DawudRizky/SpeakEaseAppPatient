@@ -23,9 +23,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dra.speakeaseapppatient.model.LocalizedStrings
 import com.dra.speakeaseapppatient.ui.components.IconTextButton
 import com.dra.speakeaseapppatient.utils.TextToSpeechHelper
+import com.dra.speakeaseapppatient.viewmodel.ProfileViewModel
 import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -35,13 +37,11 @@ import java.util.Locale
 @Composable
 fun PersonScreen(
     textToSpeechHelper: TextToSpeechHelper,
+    viewModel: ProfileViewModel = viewModel(),
     selectedLocale: MutableState<Locale>
 ) {
     val buttonItems = LocalizedStrings.getPersonButtonLabels(selectedLocale.value)
     var showLanguageDialog by remember { mutableStateOf(false) }
-
-    val database = FirebaseDatabase.getInstance("https://speakease-eb1ab-default-rtdb.asia-southeast1.firebasedatabase.app/")
-    val userRef = database.getReference("profile/history")
 
     Scaffold(
         floatingActionButton = {
@@ -71,18 +71,7 @@ fun PersonScreen(
                         textToSpeechHelper.speak(description)
 
                         val timestamp = System.currentTimeMillis()
-                        val formattedTimestamp = formatTimestamp(timestamp)
-                        val historyItem = mapOf(
-                            "text" to description,
-                            "timestamp" to formattedTimestamp
-                        )
-                        userRef.push().setValue(historyItem)
-                            .addOnSuccessListener {
-                                Log.d("PersonScreen", "History saved successfully.")
-                            }
-                            .addOnFailureListener { exception ->
-                                Log.e("PersonScreen", "Error saving history: ${exception.message}")
-                            }
+                        viewModel.saveHistoryItem(description, timestamp)
                     }
                 )
             }

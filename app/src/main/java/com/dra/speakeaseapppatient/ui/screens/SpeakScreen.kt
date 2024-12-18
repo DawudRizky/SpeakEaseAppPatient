@@ -41,8 +41,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dra.speakeaseapppatient.model.LocalizedStrings
 import com.dra.speakeaseapppatient.utils.TextToSpeechHelper
+import com.dra.speakeaseapppatient.viewmodel.ProfileViewModel
 import com.dra.speakeaseapppatient.viewmodel.SpeakViewModel
-import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -51,16 +51,14 @@ import java.util.Locale
 @Composable
 fun SpeakScreen(
     textToSpeechHelper: TextToSpeechHelper,
-    viewModel: SpeakViewModel = viewModel(),
+    speakViewModel: SpeakViewModel = viewModel(),
+    profileViewModel: ProfileViewModel = viewModel(),
     selectedLocale: MutableState<Locale>
 ) {
-    val textInput by viewModel.textInput.collectAsState()
-    val history by viewModel.history.collectAsState()
+    val textInput by speakViewModel.textInput.collectAsState()
+    val history by speakViewModel.history.collectAsState()
     var showLanguageDialog by remember { mutableStateOf(false) }
     val speakText: List<String> = LocalizedStrings.getSpeakText(selectedLocale.value)
-
-    val database = FirebaseDatabase.getInstance("https://speakease-eb1ab-default-rtdb.asia-southeast1.firebasedatabase.app/")
-    val userRef = database.getReference("profile/history")
 
     Scaffold(
         floatingActionButton = {
@@ -82,12 +80,12 @@ fun SpeakScreen(
         ) {
             OutlinedTextField(
                 value = textInput,
-                onValueChange = { viewModel.updateText(it) },
+                onValueChange = { speakViewModel.updateText(it) },
                 label = { Text(speakText[0]) },
                 modifier = Modifier.fillMaxWidth(),
                 trailingIcon = {
                     if (textInput.isNotEmpty()) {
-                        IconButton(onClick = { viewModel.updateText("") }) {
+                        IconButton(onClick = { speakViewModel.updateText("") }) {
                             Icon(
                                 imageVector = Icons.Default.Close,
                                 contentDescription = "Clear text"
@@ -102,23 +100,12 @@ fun SpeakScreen(
             Button(
                 onClick = {
                     textToSpeechHelper.speak(textInput)
-                    viewModel.addToHistory(textInput)
+                    speakViewModel.addToHistory(textInput)
 
                     val timestamp = System.currentTimeMillis()
-                    val formattedTimestamp = formatTimestamp(timestamp)
-                    val historyItem = mapOf(
-                        "text" to textInput,
-                        "timestamp" to formattedTimestamp
-                    )
-                    userRef.push().setValue(historyItem)
-                        .addOnSuccessListener {
-                            Log.d("SpeakScreen", "History saved successfully.")
-                        }
-                        .addOnFailureListener { exception ->
-                            Log.e("SpeakScreen", "Error saving history: ${exception.message}")
-                        }
+                    profileViewModel.saveHistoryItem(textInput, timestamp)
 
-                    viewModel.updateText("")
+                    speakViewModel.updateText("")
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -202,9 +189,4 @@ fun SpeakScreen(
             onDismiss = { showLanguageDialog = false }
         )
     }
-}
-
-fun formatTimestamp(timestamp: Long): String {
-    val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-    return sdf.format(Date(timestamp))
 }

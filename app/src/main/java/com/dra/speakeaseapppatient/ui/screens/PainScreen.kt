@@ -1,7 +1,6 @@
 package com.dra.speakeaseapppatient.ui.screens
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -50,17 +49,18 @@ import com.dra.speakeaseapppatient.model.LocalizedStrings
 import com.dra.speakeaseapppatient.ui.components.IconTextButton
 import com.dra.speakeaseapppatient.utils.TextToSpeechHelper
 import com.dra.speakeaseapppatient.viewmodel.PainViewModel
-import com.google.firebase.database.FirebaseDatabase
+import com.dra.speakeaseapppatient.viewmodel.ProfileViewModel
 import java.util.Locale
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun PainScreen(
     textToSpeechHelper: TextToSpeechHelper,
-    viewModel: PainViewModel = viewModel(factory = PainViewModelFactory(textToSpeechHelper)),
+    painViewModel: PainViewModel = viewModel(factory = PainViewModelFactory(textToSpeechHelper)),
+    profileViewModel: ProfileViewModel = viewModel(),
     selectedLocale: MutableState<Locale>
 ) {
-    val selectedTabIndex by viewModel.selectedTabIndex
+    val selectedTabIndex by painViewModel.selectedTabIndex
     val tabs: List<String> = LocalizedStrings.getPainTabs(selectedLocale.value)
 
     var showLanguageDialog by remember { mutableStateOf(false) }
@@ -96,15 +96,15 @@ fun PainScreen(
                 tabs.forEachIndexed { index, title ->
                     Tab(
                         selected = selectedTabIndex == index,
-                        onClick = { viewModel.selectedTabIndex.value = index },
+                        onClick = { painViewModel.selectedTabIndex.value = index },
                         text = { Text(title) }
                     )
                 }
             }
 
             when (selectedTabIndex) {
-                0 -> Level(viewModel, selectedLocale)
-                1 -> Location(viewModel)
+                0 -> Level(painViewModel, profileViewModel, selectedLocale)
+                1 -> Location(painViewModel)
             }
         }
     }
@@ -133,11 +133,8 @@ class PainViewModelFactory(
 }
 
 @Composable
-fun Level(viewModel: PainViewModel, selectedLocale: MutableState<Locale>) {
+fun Level(painViewModel: PainViewModel, profileViewModel: ProfileViewModel, selectedLocale: MutableState<Locale>) {
     val buttonItems = LocalizedStrings.getPainButtonLabels(selectedLocale.value)
-
-    val database = FirebaseDatabase.getInstance("https://speakease-eb1ab-default-rtdb.asia-southeast1.firebasedatabase.app/")
-    val userRef = database.getReference("profile/history")
 
     Box(
         modifier = Modifier
@@ -155,21 +152,10 @@ fun Level(viewModel: PainViewModel, selectedLocale: MutableState<Locale>) {
                     iconRes = iconRes,
                     text = description,
                     onClick = {
-                        viewModel.onButtonClicked(description)
+                        painViewModel.onButtonClicked(description)
 
                         val timestamp = System.currentTimeMillis()
-                        val formattedTimestamp = formatTimestamp(timestamp)
-                        val historyItem = mapOf(
-                            "text" to description,
-                            "timestamp" to formattedTimestamp
-                        )
-                        userRef.push().setValue(historyItem)
-                            .addOnSuccessListener {
-                                Log.d("PainScreen", "History saved successfully.")
-                            }
-                            .addOnFailureListener { exception ->
-                                Log.e("PainScreen", "Error saving history: ${exception.message}")
-                            }
+                        profileViewModel.saveHistoryItem(description, timestamp)
                     }
                 )
             }

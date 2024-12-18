@@ -36,4 +36,30 @@ class ProfileViewModel : ViewModel() {
                 Log.e("ProfileViewModel", "Failed to fetch data", exception)
             }
     }
+
+    fun setEmergencyStatus(status: Int, onComplete: (Boolean) -> Unit) {
+        profileRef.child("emergency").setValue(status)
+            .addOnCompleteListener { task ->
+                onComplete(task.isSuccessful)
+            }
+    }
+
+    fun saveHistoryItem(text: String, timestamp: Long) {
+        val historyItem = mapOf(
+            "text" to text,
+            "timestamp" to formatTimestamp(timestamp)
+        )
+        profileRef.child("history").push().setValue(historyItem)
+            .addOnSuccessListener {
+                Log.d("ProfileViewModel", "History saved successfully.")
+            }
+            .addOnFailureListener { exception ->
+                Log.e("ProfileViewModel", "Error saving history: ${exception.message}")
+            }
+    }
+
+    private fun formatTimestamp(timestamp: Long): String {
+        val sdf = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault())
+        return sdf.format(java.util.Date(timestamp))
+    }
 }
